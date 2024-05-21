@@ -17,5 +17,5 @@ jobs:
           project_name: ME_NodeGoat
           cx_tenant: 7ccf8d04-b5aa-4e5e-8bfb-7c10e9d074c8
           base_uri: https://ind.iam.checkmarx.net/ 
-          cx_client_id: ${{ secrets.CX_CLIENT_ID }}
-          cx_client_secret: ${{ secrets.CX_SECRET }}
+          cx_client_id: CLIENT_ID
+          cx_client_secret: onWVNPzLS8lU4FthYRT6hV6NUvywaPNK
