@@ -14,7 +14,7 @@ jobs:
       - name: Checkmarx One CLI Action
         uses: checkmarx/ast-github-action@main #Github Action version
         with:
-          project_name: palanivele/webgoat
+          project_name: ME_Velu_NodeGoat
           cx_tenant: ama-partners
           base_uri: https://ind.iam.checkmarx.net/ 
           cx_client_id: ME123_CxOne_Client
