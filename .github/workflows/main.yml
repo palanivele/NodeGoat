@@ -7,31 +7,35 @@ on:
       - dev
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Checkmarx One CLI Action
-        uses: checkmarx/ast-github-action@main #Github Action version
+        uses: checkmarx/ast-github-action@main
         with:
           project_name: ME_Velu_NodeGoat
           cx_tenant: ama-partners
-          base_uri: https://ind.iam.checkmarx.net/ 
+          base_uri: https://ind.iam.checkmarx.net/
           cx_client_id: ME123_CxOne_Client
           cx_client_secret: BQHNkrH9QleEGjTuwdAv8hoJNrFFO6Pm
-          additional_params: --report-format sarif --output-path cx_result.sarif
+          additional_params: --report-format sarif --output-path ./cx_result.sarif/cx_result.sarif
+
       - name: List directory contents
-        run: Get-ChildItem -Path . -Recurse
+        run: dir /s
+        shell: cmd
+
       - name: Set permissions for SARIF file
         run: |
-          $filePath = ".\cx_result.sarif"
+          $filePath = ".\cx_result.sarif\cx_result.sarif"
           if (Test-Path $filePath) {
             icacls $filePath /grant *S-1-1-0:F
           } else {
             Write-Error "File not found: $filePath"
-          }
-        shell: pwsh    
+        shell: pwsh
+
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v2
         with: 
-          sarif_file: cx_result.sarif
+          sarif_file: cx_result.sarif/cx_result.sarif
