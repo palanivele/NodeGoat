@@ -20,6 +20,8 @@ jobs:
           cx_client_id: ME123_CxOne_Client
           cx_client_secret: BQHNkrH9QleEGjTuwdAv8hoJNrFFO6Pm
           additional_params: --report-format sarif --output-path ..
+      - name: List generated files
+        run: dir ..
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v3
         with: 
