@@ -5,9 +5,10 @@ on:
       - main
       - master
       - dev
+
 jobs:
-  build:
-    runs-on: windows-latest
+  checkmarx_scan:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -20,7 +21,26 @@ jobs:
           base_uri: https://ind.iam.checkmarx.net/
           cx_client_id: ME123_CxOne_Client
           cx_client_secret: BQHNkrH9QleEGjTuwdAv8hoJNrFFO6Pm
-          additional_params: --report-format sarif --output-path ./cx_result.sarif/cx_result.sarif
+          additional_params: --report-format sarif --output-path ./cx_result.sarif
+
+      - name: Upload SARIF to Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: sarif-report
+          path: cx_result.sarif
+
+  upload_sarif:
+    runs-on: windows-latest
+    needs: checkmarx_scan
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Download SARIF Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: sarif-report
+          path: .
 
       - name: List directory contents
         run: dir /s
@@ -28,7 +48,7 @@ jobs:
 
       - name: Set permissions for SARIF file
         run: |
-          $filePath = ".\cx_result.sarif\cx_result.sarif"
+          $filePath = ".\cx_result.sarif"
           if (Test-Path $filePath) {
             icacls $filePath /grant *S-1-1-0:F
           } else {
@@ -38,4 +58,4 @@ jobs:
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v2
         with: 
-          sarif_file: cx_result.sarif/cx_result.sarif
+          sarif_file: cx_result.sarif
