@@ -21,11 +21,16 @@ jobs:
           cx_client_secret: BQHNkrH9QleEGjTuwdAv8hoJNrFFO6Pm
           additional_params: --report-format sarif --output-path cx_result.sarif
       - name: List directory contents
-        run: ls -l
-      - name: List directory contents of the current directory
-        run: ls -l ${{ github.workspace }}
+        run: Get-ChildItem -Path . -Recurse
       - name: Set permissions for SARIF file
-        run: chmod 644 cx_result.sarif    
+        run: |
+          $filePath = ".\cx_result.sarif"
+          if (Test-Path $filePath) {
+            icacls $filePath /grant *S-1-1-0:F
+          } else {
+            Write-Error "File not found: $filePath"
+          }
+        shell: pwsh    
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v2
         with: 
