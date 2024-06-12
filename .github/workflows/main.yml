@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Checkmarx CxFlow Action
         uses: checkmarx-ts/checkmarx-cxflow-github-action@49d8269b14ca87910ba003d47a31fa0c7a11f2fe
-      with:
+        with:
         project: ME_Velu_NodeGoat
         #cx_tenant: ama-partners
         #team: ${{ secrets.CHECKMARX_TEAMS }}
