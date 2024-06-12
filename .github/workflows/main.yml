@@ -19,7 +19,7 @@ jobs:
           base_uri: https://ind.iam.checkmarx.net/
           cx_client_id: ME123_CxOne_Client
           cx_client_secret: BQHNkrH9QleEGjTuwdAv8hoJNrFFO6Pm
-          additional_params: --report-format sarif --output-path ..
+          additional_params: --report-format sarif --output-path .github/workflows/cx_result.sarif
       - name: List generated files
         run: dir ..
       - name: Upload SARIF file
