@@ -1,40 +1,27 @@
-name: CxFlow
+name: Checkmarx One Scan
 on:
   push:
     branches:
       - main
       - master
       - dev
-  
-permissions:
-  contents: read
-
 jobs:
   build:
-    permissions:
-    contents: read 
-    issues: write 
-    pull-requests: write 
-    security-events: write 
-    actions: read 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Checkmarx CxFlow Action
-        uses: checkmarx-ts/checkmarx-cxflow-github-action@49d8269b14ca87910ba003d47a31fa0c7a11f2fe
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Checkmarx One CLI Action
+        uses: checkmarx/ast-github-action@main #Github Action version
         with:
-        project: ME_Velu_NodeGoat
-        #cx_tenant: ama-partners
-        #team: ${{ secrets.CHECKMARX_TEAMS }}
-        checkmarx_url: https://ind.iam.checkmarx.net/
-        #cx_client_id: ME123_CxOne_Client
-        checkmarx_username: palanivel@meteonic.com
-        checkmarx_password: Meteonic@12334
-        cx_client_secret: BQHNkrH9QleEGjTuwdAv8hoJNrFFO6Pm
-        #scanners: sast
-        params: --namespace=${{ github.repository_owner }} --repo-name=${{ github.event.repository.name }} --branch=${{ github.ref }} --cx-flow.filter-severity --cx-flow.filter-category --checkmarx.disable-clubbing=true --repo-url=${{ github.event.repository.url }}
-    # Upload the Report for CodeQL/Security Alerts
-    - name: Upload SARIF file
-      uses: github/codeql-action/upload-sarif@v2
-      with:
-        sarif_file: cx.sarif
+          project_name: ME_Velu_NodeGoat
+          cx_tenant: ama-partners
+          base_uri: https://ind.iam.checkmarx.net/
+          cx_client_id: ME123_CxOne_Client
+          cx_client_secret: BQHNkrH9QleEGjTuwdAv8hoJNrFFO6Pm
+          additional_params: --report-format sarif --output-path ..
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v2
+        with: 
+        # Path to SARIF file relative to the root of the repository
+          sarif_file: cx_result.sarif
