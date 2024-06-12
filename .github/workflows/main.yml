@@ -11,12 +11,12 @@ permissions:
 
 jobs:
   build:
-    permissions:
-      contents: read 
-      issues: write 
-      pull-requests: write 
-      security-events: write 
-      actions: read 
+  permissions:
+    contents: read 
+    issues: write 
+    pull-requests: write 
+    security-events: write 
+    actions: read 
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
